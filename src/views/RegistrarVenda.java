@@ -19,6 +19,17 @@ public class RegistrarVenda extends JFrame{
       RegistrarVendaControle registrarVendaControle = new RegistrarVendaControle();
 
       // Formulario
+        //table
+        JPanel tabelaPainel = new JPanel();
+        tabelaPainel.setLayout(new GridLayout(1,1));
+        String[] colunas = {"Código", "Nome", "Quantidade", "Valor Unitário"};
+        String[][] produtos = {{"teste","teste","teste","teste"}};
+        JTable tabela = new JTable(produtos, colunas);
+
+        //scroll
+        JScrollPane tabelaScroll = new JScrollPane(tabela);
+        tabelaPainel.add(tabelaScroll);
+
 
       // Campo1
       JLabel lbFormaPagamento = new JLabel("Forma de pagamento:");
@@ -49,7 +60,7 @@ public class RegistrarVenda extends JFrame{
       });
 
       // Campo2
-      JLabel lbGastosAdicionais = new JLabel("Gastos adicionais:");
+      JLabel lbGastosAdicionais = new JLabel("Data Pagamento:");
       lbGastosAdicionais.setFont(mainFont);
 
       tfGastosAdicionais = new JTextField();
@@ -62,16 +73,30 @@ public class RegistrarVenda extends JFrame{
       tfDataVenda = new JTextField();
       tfDataVenda.setFont(mainFont);
 
-      // Campo
+      // Campo4
       JLabel lbTempoGarantia = new JLabel("Tempo de Garantia:");
       lbTempoGarantia.setFont(mainFont);
 
       tfTempoGarantia = new JTextField();
       tfTempoGarantia.setFont(mainFont);
 
+      // Campo5
+      JLabel lbValorTotal = new JLabel("Valor Total:");
+      lbValorTotal.setFont(mainFont);
+
+      JTextField tfValorTotal = new JTextField();
+      tfValorTotal.setFont(mainFont);
+
+      // Campo6
+      JLabel lbValorPagamento = new JLabel("Valor Pagamento:");
+      lbValorPagamento.setFont(mainFont);
+
+      JTextField tfValorPagamento = new JTextField();
+      tfValorPagamento.setFont(mainFont);
+
       // Grid
       JPanel formPanel = new JPanel();
-      formPanel.setLayout(new GridLayout(4, 1, 5, 5));
+      formPanel.setLayout(new GridLayout(6, 2, 5, 5));
       formPanel.add(lbFormaPagamento);
       formPanel.add(tfFormaPagamento);
       formPanel.add(lbGastosAdicionais);
@@ -80,6 +105,10 @@ public class RegistrarVenda extends JFrame{
       formPanel.add(tfTempoGarantia);
       formPanel.add(lbDataVenda);
       formPanel.add(tfDataVenda);
+      formPanel.add(lbValorTotal);
+      formPanel.add(tfValorTotal);
+      formPanel.add(lbValorPagamento);
+      formPanel.add(tfValorPagamento);
 
       // Página inicial
       lbInicio = new JLabel();
@@ -155,14 +184,14 @@ public class RegistrarVenda extends JFrame{
       JPanel mainPanel = new JPanel();
       mainPanel.setLayout(new BorderLayout());
       mainPanel.setBackground(new Color(255, 250, 250));
-      mainPanel.add(formPanel, BorderLayout.NORTH);
-      mainPanel.add(lbInicio, BorderLayout.CENTER);
+      mainPanel.add(tabelaPainel, BorderLayout.NORTH);
+      mainPanel.add(formPanel, BorderLayout.CENTER);
       mainPanel.add(buttonsPanel, BorderLayout.SOUTH);
 
       add(mainPanel);
 
       setTitle("Registrar Venda");
-      setSize(500, 500);
+      setSize(1200, 800);
       setMinimumSize(new Dimension(300, 400));
       setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
       setVisible(true);
