@@ -7,8 +7,8 @@ import java.sql.SQLException;
 public class ConectarBD {
     private static final String DRIVER = "com.mysql.cj.jdbc.Driver";
     private static final String USER = "root";
-    private static final String PASSWORD = "";
-    private static final String URL = "jdbc:mysql://localhost:3306/SistemaVendas";
+    private static final String PASSWORD = "I'myourfather#";
+    private static final String URL = "jdbc:mysql://localhost:3306/SistemaDeVendas";
 
 
     public static Connection Connect(){

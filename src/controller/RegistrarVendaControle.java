@@ -1,6 +1,7 @@
 package controller;
 
 import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.Arrays;
@@ -52,7 +53,8 @@ public class RegistrarVendaControle {
   }
 
   public boolean verificarCodigoCliente(){
-    return false;
+    boolean result = Cliente.existeCliente(cliente.getCPF());
+    return result;
   }
 
   public boolean verificarCodigoAtentende(){
@@ -79,11 +81,20 @@ public class RegistrarVendaControle {
     //do sql
     try{
       String insert = "INSERT INTO Venda "
-        + "VALUES()";
+        + "VALUES(?,?,?,?,?,?,?,?,?);";
 
       Connection con = ConectarBD.Connect();
-      Statement stmt = con.createStatement();
-      stmt.executeUpdate(insert);
+      PreparedStatement stmt = con.prepareStatement(insert);
+      stmt.setString(1, null);
+      stmt.setString(2, venda.getData().toString());
+      stmt.setString(3, Double.toString(venda.getValorTotal()));
+      stmt.setString(4, Integer.toString(venda.getTempoGarantia()));
+      stmt.setString(5, venda.getTipoPagamento());
+      stmt.setString(6, venda.getDataPagamento().toString());
+      stmt.setString(7, Double.toString(venda.getValorPagamento()));
+      stmt.setString(8, Integer.toString(atendente.getID()));
+      stmt.setString(9, cliente.getCPF());
+      stmt.execute();
       con.close();
 
       return 0;
