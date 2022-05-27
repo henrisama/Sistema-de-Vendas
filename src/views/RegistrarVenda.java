@@ -3,29 +3,31 @@ package views;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.text.ParseException;
 
 import javax.swing.*;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 
 import controller.RegistrarVendaControle;
+import utils.Produtos;
 
 public class RegistrarVenda extends JFrame{
   final private Font mainFont = new Font("Arial", Font.BOLD, 18);
   JTextField tfFormaPagamento,tfDataPagamento, tfDataVenda, tfTempoGarantia;
   JLabel lbInicio;
+  Produtos produtos;
 
   public void initialize() {
       RegistrarVendaControle registrarVendaControle = new RegistrarVendaControle();
-
+      produtos = new Produtos();
       // Formulario
         //table
         JPanel tabelaPainel = new JPanel();
         tabelaPainel.setLayout(new GridLayout(1,1));
         String[] colunas = {"Código", "Nome", "Quantidade", "Valor Unitário"};
-        String[][] produtos = {{"teste","teste","teste","teste"}};
-        JTable tabela = new JTable(produtos, colunas);
+        JTable tabela = new JTable(produtos.produtos, colunas);
+        
+        
 
         //scroll
         JScrollPane tabelaScroll = new JScrollPane(tabela);
@@ -132,10 +134,15 @@ public class RegistrarVenda extends JFrame{
         }
 
         public void warn(){
-          try{
-            registrarVendaControle.venda.setTempoGarantia(Integer.parseInt(tfTempoGarantia.getText()));
-          }catch(Exception e){
-            System.out.println("Apenas numeros");
+          String tg = tfTempoGarantia.getText();
+          if(tg.length() == 0){
+            registrarVendaControle.venda.setTempoGarantia(0);
+          }else{
+            try{
+              registrarVendaControle.venda.setTempoGarantia(Integer.parseInt(tfTempoGarantia.getText()));
+            }catch(Exception e){
+              System.out.println("Apenas numeros");
+            }
           }
         }
       });
@@ -260,7 +267,7 @@ public class RegistrarVenda extends JFrame{
           @Override
           public void actionPerformed(ActionEvent e) {   
             System.out.println(registrarVendaControle.venda.toString());
-            int result = registrarVendaControle.handleConcluir();
+            int result = registrarVendaControle.handleConcluir(produtos);
 
             switch (result) {
               case 0:
@@ -268,7 +275,7 @@ public class RegistrarVenda extends JFrame{
                   null,
                   "Venda registrada!", 
                   "Mensagem de sucesso",
-                  JOptionPane.ERROR_MESSAGE
+                  JOptionPane.PLAIN_MESSAGE
                 );
                 break;
               case 1:
@@ -303,10 +310,42 @@ public class RegistrarVenda extends JFrame{
                   JOptionPane.ERROR_MESSAGE
                 );
                 break;
+              case 5:
+                JOptionPane.showMessageDialog(
+                  null,
+                  "Erro: Data de pagamento inválida!", 
+                  "Mensagem de erro",
+                  JOptionPane.ERROR_MESSAGE
+                );
+                break;
+              case 6:
+                JOptionPane.showMessageDialog(
+                  null,
+                  "Erro: Valor de pagamento inválido!", 
+                  "Mensagem de erro",
+                  JOptionPane.ERROR_MESSAGE
+                );
+                break;
               case 7:
                 JOptionPane.showMessageDialog(
                   null,
                   "Erro: Código do cliente inválido!", 
+                  "Mensagem de erro",
+                  JOptionPane.ERROR_MESSAGE
+                );
+                break;
+              case 8:
+                JOptionPane.showMessageDialog(
+                  null,
+                  "Erro: Código do atendente inválido!", 
+                  "Mensagem de erro",
+                  JOptionPane.ERROR_MESSAGE
+                );
+                break;
+              case 9:
+                JOptionPane.showMessageDialog(
+                  null,
+                  "Erro: Problema no banco de dados!", 
                   "Mensagem de erro",
                   JOptionPane.ERROR_MESSAGE
                 );
@@ -323,10 +362,10 @@ public class RegistrarVenda extends JFrame{
 
           @Override
           public void actionPerformed(ActionEvent e) {
-              tfFormaPagamento.setText("");
-             tfDataPagamento.setText("");
-              tfTempoGarantia.setText("");
-              tfDataVenda.setText("");
+            tfFormaPagamento.setText("");
+            tfDataPagamento.setText("");
+            tfTempoGarantia.setText("");
+            tfDataVenda.setText("");
           }
       });
 
@@ -336,7 +375,8 @@ public class RegistrarVenda extends JFrame{
 
           @Override
           public void actionPerformed(ActionEvent e) {
-              
+              new AdicionarProduto(produtos);
+              tabela.revalidate();
           }
           
       });

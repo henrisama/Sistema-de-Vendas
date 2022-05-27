@@ -60,11 +60,11 @@ public class Venda {
     this.valorPagamento = valorPagamento;
   }
 
-  public void adicionarItem(int codigoProduto, int quantidade){
+  public void adicionarItem(String codigoProduto, int quantidade){
     itemsVendidos.add(new ItemVendido(codigoProduto, quantidade));
   }
 
-  public void adicionarItem(int codigoProduto){
+  public void adicionarItem(String codigoProduto){
     itemsVendidos.add(new ItemVendido(codigoProduto));
   }
 

@@ -7,14 +7,14 @@ public class ItemVendido {
   private Produto produto;
 
 
-  public ItemVendido(int codigoProduto, int quantidade) {
+  public ItemVendido(String codigoProduto, int quantidade) {
     produto = Produto.getProduto(codigoProduto);
     this.ValorTotal = produto.getValorVenda() * quantidade;
     
     this.quantidade = quantidade;
   }
 
-  public ItemVendido(int codigoProduto) {
+  public ItemVendido(String codigoProduto) {
     produto = Produto.getProduto(codigoProduto);
     this.quantidade = 1;
   }
@@ -41,6 +41,10 @@ public class ItemVendido {
 
   public void setValorTotal(double ValorTotal) {
     this.ValorTotal = ValorTotal;
+  }
+
+  public void registrarItemVenda(int codVenda){
+
   }
 
 

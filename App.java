@@ -1,3 +1,4 @@
+
 import views.RegistrarVenda;
 
 public class App {
