@@ -1,11 +1,9 @@
 package utils;
 
-import java.sql.Date;
-
 abstract class Funcionario extends Pessoa {
   int ID;
   double Salario;
-  Date dataInicio;
+  String dataInicio;
   String cargo;
 
   public int getID() {
@@ -24,11 +22,11 @@ abstract class Funcionario extends Pessoa {
     this.Salario = Salario;
   }
 
-  public Date getDataInicio() {
+  public String getDataInicio() {
     return this.dataInicio;
   }
 
-  public void setDataInicio(Date dataInicio) {
+  public void setDataInicio(String dataInicio) {
     this.dataInicio = dataInicio;
   }
 

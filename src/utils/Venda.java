@@ -1,23 +1,22 @@
 package utils;
 
-import java.sql.Date;
 import java.util.List;
 
 public class Venda {
-  private Date data;
+  private String data;
   private double valorTotal;
   private int tempoGarantia;
   private String tipoPagamento;
-  private Date dataPagamento;
+  private String dataPagamento;
   private double valorPagamento;
 
   private List<ItemVendido> itemsVendidos;
 
-  public Date getData() {
+  public String getData() {
     return this.data;
   }
 
-  public void setData(Date data) {
+  public void setData(String data) {
     this.data = data;
   }
 
@@ -45,11 +44,11 @@ public class Venda {
     this.tipoPagamento = tipoPagamento;
   }
 
-  public Date getDataPagamento() {
+  public String getDataPagamento() {
     return this.dataPagamento;
   }
 
-  public void setDataPagamento(Date dataPagamento) {
+  public void setDataPagamento(String dataPagamento) {
     this.dataPagamento = dataPagamento;
   }
 

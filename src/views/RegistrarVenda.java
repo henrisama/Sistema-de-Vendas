@@ -13,7 +13,7 @@ import controller.RegistrarVendaControle;
 
 public class RegistrarVenda extends JFrame{
   final private Font mainFont = new Font("Arial", Font.BOLD, 18);
-  JTextField tfFormaPagamento, tfGastosAdicionais, tfDataVenda, tfTempoGarantia;
+  JTextField tfFormaPagamento,tfDataPagamento, tfDataVenda, tfTempoGarantia;
   JLabel lbInicio;
 
   public void initialize() {
@@ -61,11 +61,31 @@ public class RegistrarVenda extends JFrame{
       });
 
       // Campo2
-      JLabel lbGastosAdicionais = new JLabel("Data Pagamento:");
-      lbGastosAdicionais.setFont(mainFont);
+      JLabel lbDataPagamento = new JLabel("Data Pagamento:");
+      lbDataPagamento.setFont(mainFont);
 
-      tfGastosAdicionais = new JTextField();
-      tfGastosAdicionais.setFont(mainFont);
+     tfDataPagamento = new JTextField();
+     tfDataPagamento.setFont(mainFont);
+     tfDataPagamento.getDocument().addDocumentListener(new DocumentListener() {
+      public void changedUpdate(DocumentEvent e) {
+        warn();
+      }
+      public void removeUpdate(DocumentEvent e) {
+        warn();
+      }
+      public void insertUpdate(DocumentEvent e) {
+        warn();
+      }
+
+      public void warn(){
+        registrarVendaControle.venda.setDataPagamento(tfDataPagamento.getText());
+        if(!registrarVendaControle.verificarDataPagamento()){
+          System.out.println("Data inválida");
+        }else{
+          System.out.println("Data válido");
+        }
+      }
+    });
 
       // Campo3
       JLabel lbDataVenda = new JLabel("Data da venda:");
@@ -73,6 +93,26 @@ public class RegistrarVenda extends JFrame{
 
       tfDataVenda = new JTextField();
       tfDataVenda.setFont(mainFont);
+      tfDataVenda.getDocument().addDocumentListener(new DocumentListener() {
+        public void changedUpdate(DocumentEvent e) {
+          warn();
+        }
+        public void removeUpdate(DocumentEvent e) {
+          warn();
+        }
+        public void insertUpdate(DocumentEvent e) {
+          warn();
+        }
+
+        public void warn(){
+          registrarVendaControle.venda.setData(tfDataVenda.getText());
+          if(!registrarVendaControle.verificarData()){
+            System.out.println("Data inválida");
+          }else{
+            System.out.println("Data válido");
+          }
+        }
+      });
 
       // Campo4
       JLabel lbTempoGarantia = new JLabel("Tempo de Garantia:");
@@ -186,16 +226,16 @@ public class RegistrarVenda extends JFrame{
       // Grid
       JPanel formPanel = new JPanel();
       formPanel.setLayout(new GridLayout(7, 2, 5, 5));
-      formPanel.add(lbFormaPagamento);
-      formPanel.add(tfFormaPagamento);
-      formPanel.add(lbGastosAdicionais);
-      formPanel.add(tfGastosAdicionais);
-      formPanel.add(lbTempoGarantia);
-      formPanel.add(tfTempoGarantia);
       formPanel.add(lbDataVenda);
       formPanel.add(tfDataVenda);
+      formPanel.add(lbFormaPagamento);
+      formPanel.add(tfFormaPagamento);
       formPanel.add(lbValorTotal);
       formPanel.add(tfValorTotal);
+      formPanel.add(lbTempoGarantia);
+      formPanel.add(tfTempoGarantia);
+      formPanel.add(lbDataPagamento);
+      formPanel.add(tfDataPagamento);
       formPanel.add(lbValorPagamento);
       formPanel.add(tfValorPagamento);
       formPanel.add(lbCodCliente);
@@ -211,53 +251,60 @@ public class RegistrarVenda extends JFrame{
       btnConluir.addActionListener(new ActionListener(){
 
           @Override
-          public void actionPerformed(ActionEvent e) {          
-              int result = registrarVendaControle.handleConcluir();
+          public void actionPerformed(ActionEvent e) {   
+            System.out.println(registrarVendaControle.venda.toString());
+            int result = registrarVendaControle.handleConcluir();
 
-              switch (result) {
-                case 1:
-                  JOptionPane.showMessageDialog(
-                    null,
-                    "Erro: Data inválida!", 
-                    "Mensagem de erro",
-                    JOptionPane.ERROR_MESSAGE
-                  );
-                  break;
-                case 2:
-                  JOptionPane.showMessageDialog(
-                    null,
-                    "Erro: Valor inválido!", 
-                    "Mensagem de erro",
-                    JOptionPane.ERROR_MESSAGE
-                  );
-                  break;
-                case 3:
-                  JOptionPane.showMessageDialog(
-                    null,
-                    "Erro: Período de garantia inválido!", 
-                    "Mensagem de erro",
-                    JOptionPane.ERROR_MESSAGE
-                  );
-                  break;
-                case 4:
-                  JOptionPane.showMessageDialog(
-                    null,
-                    "Erro: Forma de pagamento inválida!", 
-                    "Mensagem de erro",
-                    JOptionPane.ERROR_MESSAGE
-                  );
-                  break;
-                case 7:
-                  JOptionPane.showMessageDialog(
-                    null,
-                    "Erro: Código do cliente inválido!", 
-                    "Mensagem de erro",
-                    JOptionPane.ERROR_MESSAGE
-                  );
-                  break;
-                default:
-                  break;
-              }
+            switch (result) {
+              case 0:
+                JOptionPane.showMessageDialog(
+                  null,
+                  "Venda registrada!", 
+                  "Mensagem de sucesso",
+                  JOptionPane.ERROR_MESSAGE
+                );
+                break;
+              case 1:
+                JOptionPane.showMessageDialog(
+                  null,
+                  "Erro: Data inválida!", 
+                  "Mensagem de erro",
+                  JOptionPane.ERROR_MESSAGE
+                );
+                break;
+              case 2:
+                JOptionPane.showMessageDialog(
+                  null,
+                  "Erro: Valor inválido!", 
+                  "Mensagem de erro",
+                  JOptionPane.ERROR_MESSAGE
+                );
+                break;
+              case 3:
+                JOptionPane.showMessageDialog(
+                  null,
+                  "Erro: Período de garantia inválido!", 
+                  "Mensagem de erro",
+                  JOptionPane.ERROR_MESSAGE
+                );
+                break;
+              case 4:
+                JOptionPane.showMessageDialog(
+                  null,
+                  "Erro: Forma de pagamento inválida!", 
+                  "Mensagem de erro",
+                  JOptionPane.ERROR_MESSAGE
+                );
+                break;
+              case 7:
+                JOptionPane.showMessageDialog(
+                  null,
+                  "Erro: Código do cliente inválido!", 
+                  "Mensagem de erro",
+                  JOptionPane.ERROR_MESSAGE
+                );
+                break;
+            }
               
           }
 
@@ -270,7 +317,7 @@ public class RegistrarVenda extends JFrame{
           @Override
           public void actionPerformed(ActionEvent e) {
               tfFormaPagamento.setText("");
-              tfGastosAdicionais.setText("");
+             tfDataPagamento.setText("");
               tfTempoGarantia.setText("");
               tfDataVenda.setText("");
           }

@@ -23,15 +23,24 @@ public class RegistrarVendaControle {
   }
 
   public boolean verificarData(){
-    return false;
+    if(!venda.getData().matches("\\d{4}-\\d{2}-\\d{2}")){
+      return false;
+    }
+    return true;
   }
 
   public boolean verificarValorTotal(){
-    return false;
+    if(venda.getValorTotal() < 0){
+      return false;
+    }
+    return true;
   }
 
   public boolean verificarTempoGarantia(){
-    return false;
+    if(venda.getTempoGarantia() < 0){
+      return false;
+    }
+    return true;
   }
 
   public boolean verificarTipoPagamento(){
@@ -45,11 +54,17 @@ public class RegistrarVendaControle {
   }
 
   public boolean verificarDataPagamento(){
-    return false;
+    if(!venda.getDataPagamento().matches("\\d{4}-\\d{2}-\\d{2}")){
+      return false;
+    }
+    return true;
   }
 
   public boolean verificarValorPagamento(){
-    return false;
+    if(venda.getValorPagamento() < 0){
+      return false;
+    }
+    return true;
   }
 
   public boolean verificarCodigoCliente(){
@@ -58,7 +73,7 @@ public class RegistrarVendaControle {
   }
 
   public boolean verificarCodigoAtentende(){
-    return false;
+    return true;
   }
 
   public int handleConcluir(){
@@ -79,14 +94,14 @@ public class RegistrarVendaControle {
     if(!verificarCodigoAtentende()){ return 8; }
     
     //do sql
-    try{
+    /* try{
       String insert = "INSERT INTO Venda "
         + "VALUES(?,?,?,?,?,?,?,?,?);";
 
       Connection con = ConectarBD.Connect();
       PreparedStatement stmt = con.prepareStatement(insert);
       stmt.setString(1, null);
-      stmt.setString(2, venda.getData().toString());
+      stmt.setString(2, venda.getData());
       stmt.setString(3, Double.toString(venda.getValorTotal()));
       stmt.setString(4, Integer.toString(venda.getTempoGarantia()));
       stmt.setString(5, venda.getTipoPagamento());
@@ -101,8 +116,8 @@ public class RegistrarVendaControle {
     }catch(SQLException e){
       System.out.println(e.getMessage());
       return 9;
-    }
-
+    } */
+    return 0;
   }
 
   public void handleAdicionar(){
