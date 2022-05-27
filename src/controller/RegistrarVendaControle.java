@@ -23,6 +23,9 @@ public class RegistrarVendaControle {
   }
 
   public boolean verificarData(){
+    if(venda.getData() == null){
+      return false;
+    }
     if(!venda.getData().matches("\\d{4}-\\d{2}-\\d{2}")){
       return false;
     }
@@ -30,6 +33,10 @@ public class RegistrarVendaControle {
   }
 
   public boolean verificarValorTotal(){
+    System.out.println(venda.getValorTotal());
+    /* if(venda.getValorTotal() ){
+      return false;
+    } */
     if(venda.getValorTotal() < 0){
       return false;
     }

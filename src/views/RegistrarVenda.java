@@ -158,10 +158,17 @@ public class RegistrarVenda extends JFrame{
         }
 
         public void warn(){
-          try{
-            registrarVendaControle.venda.setValorTotal(Double.parseDouble(tfValorTotal.getText()));
-          }catch(Exception e){
-            System.out.println("Apenas numeros");
+          String num = tfValorTotal.getText();
+
+          if(num.length() == 0){
+            registrarVendaControle.venda.setValorTotal(0.0);
+          }
+          else{
+            try{
+              registrarVendaControle.venda.setValorTotal(Double.parseDouble(tfValorTotal.getText()));
+            }catch(Exception e){
+              System.out.println("Apenas numeros");
+            }
           }
         }
       });
@@ -228,12 +235,12 @@ public class RegistrarVenda extends JFrame{
       formPanel.setLayout(new GridLayout(7, 2, 5, 5));
       formPanel.add(lbDataVenda);
       formPanel.add(tfDataVenda);
-      formPanel.add(lbFormaPagamento);
-      formPanel.add(tfFormaPagamento);
       formPanel.add(lbValorTotal);
       formPanel.add(tfValorTotal);
       formPanel.add(lbTempoGarantia);
       formPanel.add(tfTempoGarantia);
+      formPanel.add(lbFormaPagamento);
+      formPanel.add(tfFormaPagamento);
       formPanel.add(lbDataPagamento);
       formPanel.add(tfDataPagamento);
       formPanel.add(lbValorPagamento);
