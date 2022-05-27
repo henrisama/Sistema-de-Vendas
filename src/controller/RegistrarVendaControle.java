@@ -8,6 +8,7 @@ import java.util.Arrays;
 import config.ConectarBD;
 import utils.Atendente;
 import utils.Cliente;
+import utils.Produto;
 import utils.Produtos;
 import utils.Venda;
 
@@ -127,11 +128,18 @@ public class RegistrarVendaControle {
       con.close();
 
       int i = 0;
+      String insert2 = "INSERT INTO ItemVendido " + "VALUES(?,?,?,?,?)";
       for(i=0; i<produtos.index_produtos; i++){
         /* produtos.produtos[i][0] //codigo
         produtos.produtos[i][1] //nome
         produtos.produtos[i][2] //quantidade
         produtos.produtos[i][3] //valor unitario */
+        Produto produto = Produto.getProduto(produtos.produtos[i][0]);
+      PreparedStatement stmt2 = con.prepareStatement(insert2);
+      stmt2.setString(1, null);
+      stmt2.setString(2, produtos.produtos[i][2]);
+      stmt2.setString(3, Double.toString(produto.getValorCusto()));
+      stmt2.setString(4, Double.toString(produto.getValorVenda()*Integer.parseInt(produtos.produtos[i][2])));
       }
 
       return 0;
