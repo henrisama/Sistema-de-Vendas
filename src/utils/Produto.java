@@ -3,17 +3,26 @@ package utils;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-import java.sql.ResultSetMetaData;
+//import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 
 import config.ConectarBD;
 
 public class Produto {
+  private int ID;
   private String codigo;
   private String nome;
   private double valorVenda;
   private double valorCusto;
   private int quantidade;
+
+  public int getID(){
+    return this.ID;
+  }
+
+  public void setID(int id) {
+    this.ID = id;
+  }
 
   public String getCodigo() {
     return this.codigo;
@@ -67,15 +76,16 @@ public class Produto {
       final PreparedStatement ps = con.prepareStatement(search);
       final ResultSet rs = ps.executeQuery();
 
-      final ResultSetMetaData metaRS = rs.getMetaData();
-      final int columnCount = metaRS.getColumnCount();
+      /* final ResultSetMetaData metaRS = rs.getMetaData();
+      final int columnCount = metaRS.getColumnCount(); */
 
       while (rs.next()) {
         hasData = true;
-        for (int i = 1; i <= columnCount; i++) {
+        /* for (int i = 1; i <= columnCount; i++) {
           final Object value = rs.getObject(i);
           System.out.println("column: "+i+" Valor: "+value.toString());
-        }
+        } */
+        produto.setID(Integer.parseInt(rs.getObject(1).toString()));
         produto.setValorVenda(Double.parseDouble(rs.getObject(2).toString())); //valor de venda
         produto.setValorCusto(Double.parseDouble(rs.getObject(3).toString())); //valor de custo
         produto.setNome(rs.getObject(4).toString()); // nome
@@ -86,7 +96,7 @@ public class Produto {
       System.out.println(e.getMessage());
     }
 
-    System.out.println(produto.toString());
+    //System.out.println(produto.toString());
 
     if(!hasData){
       return null;

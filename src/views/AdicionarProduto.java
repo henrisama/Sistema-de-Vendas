@@ -6,6 +6,7 @@ import java.awt.event.ActionListener;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.WindowConstants;
@@ -96,11 +97,18 @@ public class AdicionarProduto extends JFrame{
             System.out.print(produtos.produtos[i][2]+" ");
             System.out.println(produtos.produtos[i][3]+" ");
           }
-          System.out.println(produtos.index_produtos);
+          //System.out.println(produtos.index_produtos);
           produtos.index_produtos++;
 
           setVisible(false);
           dispose();
+        }else{
+          JOptionPane.showMessageDialog(
+            null,
+            "Código inválido!", 
+            "Mensagem de erro",
+            JOptionPane.PLAIN_MESSAGE
+          );
         }
       }
       

@@ -2,7 +2,9 @@ package controller;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.Arrays;
 
 import config.ConectarBD;
@@ -34,7 +36,7 @@ public class RegistrarVendaControle {
   }
 
   public boolean verificarValorTotal(){
-    System.out.println(venda.getValorTotal());
+    //System.out.println(venda.getValorTotal());
     /* if(venda.getValorTotal() ){
       return false;
     } */
@@ -45,7 +47,7 @@ public class RegistrarVendaControle {
   }
 
   public boolean verificarTempoGarantia(){
-    System.out.println(venda.getTempoGarantia());
+    //System.out.println(venda.getTempoGarantia());
     if(venda.getTempoGarantia() < 0){
       return false;
     }
@@ -114,7 +116,7 @@ public class RegistrarVendaControle {
         + "VALUES(?,?,?,?,?,?,?,?,?);";
 
       Connection con = ConectarBD.Connect();
-      PreparedStatement stmt = con.prepareStatement(insert);
+      PreparedStatement stmt = con.prepareStatement(insert, Statement.RETURN_GENERATED_KEYS);
       stmt.setString(1, null);
       stmt.setString(2, venda.getData());
       stmt.setString(3, Double.toString(venda.getValorTotal()));
@@ -124,24 +126,50 @@ public class RegistrarVendaControle {
       stmt.setString(7, Double.toString(venda.getValorPagamento()));
       stmt.setString(8, Integer.toString(atendente.getID()));
       stmt.setString(9, cliente.getCPF());
-      stmt.execute();
-      con.close();
+      stmt.executeUpdate();
 
+      long venda_id = 1;
+      try (ResultSet generatedKeys = stmt.getGeneratedKeys()){
+        if(generatedKeys.next()){
+          venda_id = generatedKeys.getLong(1);
+        }
+      }
+
+      //System.out.println(venda_id);
+      
       int i = 0;
-      String insert2 = "INSERT INTO ItemVendido " + "VALUES(?,?,?,?,?)";
+      String insert2 = "INSERT INTO ItemVendido " + "VALUES(?,?,?,?,?);";
+      
       for(i=0; i<produtos.index_produtos; i++){
         /* produtos.produtos[i][0] //codigo
         produtos.produtos[i][1] //nome
         produtos.produtos[i][2] //quantidade
         produtos.produtos[i][3] //valor unitario */
         Produto produto = Produto.getProduto(produtos.produtos[i][0]);
-      PreparedStatement stmt2 = con.prepareStatement(insert2);
-      stmt2.setString(1, null);
-      stmt2.setString(2, produtos.produtos[i][2]);
-      stmt2.setString(3, Double.toString(produto.getValorCusto()));
-      stmt2.setString(4, Double.toString(produto.getValorVenda()*Integer.parseInt(produtos.produtos[i][2])));
+        PreparedStatement stmt2 = con.prepareStatement(insert2, Statement.RETURN_GENERATED_KEYS);
+        stmt2.setString(1, null);
+        stmt2.setString(2, produtos.produtos[i][2]);
+        stmt2.setString(3, Double.toString(produto.getValorCusto()));
+        stmt2.setString(4, Double.toString(produto.getValorVenda()*Integer.parseInt(produtos.produtos[i][2])));
+        stmt2.setString(5, Integer.toString(produto.getID()));
+        stmt2.executeUpdate();
+        
+        long item_id = 1;
+        try (ResultSet generatedKeys2 = stmt2.getGeneratedKeys()){
+          if(generatedKeys2.next()){
+            item_id = generatedKeys2.getLong(1);
+          }
+        }
+        
+        String insert3 = "INSERT INTO Venda_ItemVendido "+ "VALUES(?,?)";
+        PreparedStatement stmt3 = con.prepareStatement(insert3);
+        stmt3.setString(1, Long.toString(venda_id));
+        stmt3.setString(2, Long.toString(item_id));
+        stmt3.executeUpdate();
+        
       }
-
+      
+      con.close();
       return 0;
     }catch(SQLException e){
       System.out.println(e.getMessage());
@@ -150,7 +178,7 @@ public class RegistrarVendaControle {
   }
 
   public void handleAdicionar(){
-
+    
   }
   
 }
