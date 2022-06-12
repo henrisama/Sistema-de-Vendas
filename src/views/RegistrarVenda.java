@@ -3,44 +3,49 @@ package views;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.swing.*;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
+import javax.swing.table.DefaultTableModel;
 
+import Static.StaticVariables;
 import controller.RegistrarVendaControle;
-import utils.Produtos;
 
 public class RegistrarVenda extends JFrame{
-  final private Font mainFont = new Font("Arial", Font.BOLD, 18);
+  RegistrarVendaControle controller = new RegistrarVendaControle();
+  private List<String> columns = new ArrayList<String>();
+  private List<String[]> values = new ArrayList<String[]>();
+
   JTextField tfFormaPagamento,tfDataPagamento, tfDataVenda, tfTempoGarantia;
   JLabel lbInicio;
-  Produtos produtos;
 
-  public void initialize() {
-      RegistrarVendaControle registrarVendaControle = new RegistrarVendaControle();
-      produtos = new Produtos();
-      // Formulario
-        //table
-        JPanel tabelaPainel = new JPanel();
-        tabelaPainel.setLayout(new GridLayout(1,1));
-        String[] colunas = {"Código", "Nome", "Quantidade", "Valor Unitário"};
-        JTable tabela = new JTable(produtos.produtos, colunas);
-        
-        
+  public RegistrarVenda() {
+    // table
+    columns.add("Código");
+    columns.add("Nome");
+    columns.add("Quantidade");
+    columns.add("Valor Unitário");
+    columns.add("Valor Total");
+    
+    DefaultTableModel tableModel = new DefaultTableModel(values.toArray(new Object[][] {}), columns.toArray());
+    JTable registerTable = new JTable(tableModel){
+      public boolean editCellAt(int row, int column, java.util.EventObject e) {
+         return false;
+      }
+    };
 
-        //scroll
-        JScrollPane tabelaScroll = new JScrollPane(tabela);
-        tabelaPainel.add(tabelaScroll);
-
+    
 
       // Campo1
       JLabel lbFormaPagamento = new JLabel("Forma de pagamento:");
-      lbFormaPagamento.setFont(mainFont);
+      lbFormaPagamento.setFont(StaticVariables.staticFont);
       
 
       tfFormaPagamento = new JTextField();
-      tfFormaPagamento.setFont(mainFont);
+      tfFormaPagamento.setFont(StaticVariables.staticFont);
       tfFormaPagamento.getDocument().addDocumentListener(new DocumentListener() {
         public void changedUpdate(DocumentEvent e) {
           warn();
@@ -53,8 +58,8 @@ public class RegistrarVenda extends JFrame{
         }
 
         public void warn(){
-          registrarVendaControle.venda.setTipoPagamento(tfFormaPagamento.getText().toUpperCase());
-          if(!registrarVendaControle.verificarTipoPagamento()){
+          controller.venda.setTipoPagamento(tfFormaPagamento.getText().toUpperCase());
+          if(!controller.verificarTipoPagamento()){
             System.out.println("Tipo de pagamento inválido");
           }else{
             System.out.println("Tipo de pagamento válido");
@@ -64,10 +69,10 @@ public class RegistrarVenda extends JFrame{
 
       // Campo2
       JLabel lbDataPagamento = new JLabel("Data Pagamento:");
-      lbDataPagamento.setFont(mainFont);
+      lbDataPagamento.setFont(StaticVariables.staticFont);
 
      tfDataPagamento = new JTextField();
-     tfDataPagamento.setFont(mainFont);
+     tfDataPagamento.setFont(StaticVariables.staticFont);
      tfDataPagamento.getDocument().addDocumentListener(new DocumentListener() {
       public void changedUpdate(DocumentEvent e) {
         warn();
@@ -80,8 +85,8 @@ public class RegistrarVenda extends JFrame{
       }
 
       public void warn(){
-        registrarVendaControle.venda.setDataPagamento(tfDataPagamento.getText());
-        if(!registrarVendaControle.verificarDataPagamento()){
+        controller.venda.setDataPagamento(tfDataPagamento.getText());
+        if(!controller.verificarDataPagamento()){
           System.out.println("Data inválida");
         }else{
           System.out.println("Data válido");
@@ -91,10 +96,10 @@ public class RegistrarVenda extends JFrame{
 
       // Campo3
       JLabel lbDataVenda = new JLabel("Data da venda:");
-      lbDataVenda.setFont(mainFont);
+      lbDataVenda.setFont(StaticVariables.staticFont);
 
       tfDataVenda = new JTextField();
-      tfDataVenda.setFont(mainFont);
+      tfDataVenda.setFont(StaticVariables.staticFont);
       tfDataVenda.getDocument().addDocumentListener(new DocumentListener() {
         public void changedUpdate(DocumentEvent e) {
           warn();
@@ -107,8 +112,8 @@ public class RegistrarVenda extends JFrame{
         }
 
         public void warn(){
-          registrarVendaControle.venda.setData(tfDataVenda.getText());
-          if(!registrarVendaControle.verificarData()){
+          controller.venda.setData(tfDataVenda.getText());
+          if(!controller.verificarData()){
             System.out.println("Data inválida");
           }else{
             System.out.println("Data válido");
@@ -118,10 +123,10 @@ public class RegistrarVenda extends JFrame{
 
       // Campo4
       JLabel lbTempoGarantia = new JLabel("Tempo de Garantia:");
-      lbTempoGarantia.setFont(mainFont);
+      lbTempoGarantia.setFont(StaticVariables.staticFont);
 
       tfTempoGarantia = new JTextField();
-      tfTempoGarantia.setFont(mainFont);
+      tfTempoGarantia.setFont(StaticVariables.staticFont);
       tfTempoGarantia.getDocument().addDocumentListener(new DocumentListener() {
         public void changedUpdate(DocumentEvent e) {
           warn();
@@ -136,10 +141,10 @@ public class RegistrarVenda extends JFrame{
         public void warn(){
           String tg = tfTempoGarantia.getText();
           if(tg.length() == 0){
-            registrarVendaControle.venda.setTempoGarantia(0);
+            controller.venda.setTempoGarantia(0);
           }else{
             try{
-              registrarVendaControle.venda.setTempoGarantia(Integer.parseInt(tfTempoGarantia.getText()));
+              controller.venda.setTempoGarantia(Integer.parseInt(tfTempoGarantia.getText()));
             }catch(Exception e){
               System.out.println("Apenas numeros");
             }
@@ -149,10 +154,10 @@ public class RegistrarVenda extends JFrame{
 
       // Campo5
       JLabel lbValorTotal = new JLabel("Valor Total:");
-      lbValorTotal.setFont(mainFont);
+      lbValorTotal.setFont(StaticVariables.staticFont);
 
       JTextField tfValorTotal = new JTextField();
-      tfValorTotal.setFont(mainFont);
+      tfValorTotal.setFont(StaticVariables.staticFont);
       tfValorTotal.getDocument().addDocumentListener(new DocumentListener() {
         public void changedUpdate(DocumentEvent e) {
           warn();
@@ -168,11 +173,11 @@ public class RegistrarVenda extends JFrame{
           String num = tfValorTotal.getText();
 
           if(num.length() == 0){
-            registrarVendaControle.venda.setValorTotal(0.0);
+            controller.venda.setValorTotal(0.0);
           }
           else{
             try{
-              registrarVendaControle.venda.setValorTotal(Double.parseDouble(tfValorTotal.getText()));
+              controller.venda.setValorTotal(Double.parseDouble(tfValorTotal.getText()));
             }catch(Exception e){
               System.out.println("Apenas numeros");
             }
@@ -182,10 +187,10 @@ public class RegistrarVenda extends JFrame{
 
       // Campo6
       JLabel lbValorPagamento = new JLabel("Valor Pagamento:");
-      lbValorPagamento.setFont(mainFont);
+      lbValorPagamento.setFont(StaticVariables.staticFont);
 
       JTextField tfValorPagamento = new JTextField();
-      tfValorPagamento.setFont(mainFont);
+      tfValorPagamento.setFont(StaticVariables.staticFont);
       tfValorPagamento.getDocument().addDocumentListener(new DocumentListener() {
         public void changedUpdate(DocumentEvent e) {
           warn();
@@ -199,7 +204,7 @@ public class RegistrarVenda extends JFrame{
 
         public void warn(){
           try{
-            registrarVendaControle.venda.setValorPagamento(Double.parseDouble(tfValorPagamento.getText()));
+            controller.venda.setValorPagamento(Double.parseDouble(tfValorPagamento.getText()));
           }catch(Exception e){
             System.out.println("Apenas numeros");
           }
@@ -208,10 +213,10 @@ public class RegistrarVenda extends JFrame{
 
       // Campo7
       JLabel lbCodCliente = new JLabel("CPF Cliente:");
-      lbCodCliente.setFont(mainFont);
+      lbCodCliente.setFont(StaticVariables.staticFont);
 
       JTextField tfCodCliente = new JTextField(11);
-      tfCodCliente.setFont(mainFont);
+      tfCodCliente.setFont(StaticVariables.staticFont);
       tfCodCliente.getDocument().addDocumentListener(new DocumentListener() {
         public void changedUpdate(DocumentEvent e) {
           warn();
@@ -229,10 +234,9 @@ public class RegistrarVenda extends JFrame{
             char lastCaracter = cpf.charAt(cpf.length() - 1);
   
             if(lastCaracter < '0' || lastCaracter > '9'){
-              //String realcpf = cpf.substring(0, cpf.length() - 1);
               System.out.println("Apenas números");
             }
-            registrarVendaControle.cliente.setCPF(tfCodCliente.getText());
+            controller.venda.getCliente().setCPF(cpf);
           }
         }
       });
@@ -257,17 +261,17 @@ public class RegistrarVenda extends JFrame{
 
       // Página inicial
       lbInicio = new JLabel();
-      lbInicio.setFont(mainFont);
+      lbInicio.setFont(StaticVariables.staticFont);
 
       // Botoes
       JButton btnConluir = new JButton("Concluir");
-      btnConluir.setFont(mainFont);
+      btnConluir.setFont(StaticVariables.staticFont);
       btnConluir.addActionListener(new ActionListener(){
 
           @Override
           public void actionPerformed(ActionEvent e) {   
-            System.out.println(registrarVendaControle.venda.toString());
-            int result = registrarVendaControle.handleConcluir(produtos);
+            System.out.println(controller.venda.toString());
+            int result = controller.handleConcluir();
 
             switch (result) {
               case 0:
@@ -277,6 +281,8 @@ public class RegistrarVenda extends JFrame{
                   "Mensagem de sucesso",
                   JOptionPane.PLAIN_MESSAGE
                 );
+                setVisible(false);
+                dispose();
                 break;
               case 1:
                 JOptionPane.showMessageDialog(
@@ -357,7 +363,7 @@ public class RegistrarVenda extends JFrame{
       });
 
       JButton btnCancelar = new JButton("Cancelar");
-      btnCancelar.setFont(mainFont);
+      btnCancelar.setFont(StaticVariables.staticFont);
       btnCancelar.addActionListener(new ActionListener(){
 
           @Override
@@ -370,15 +376,12 @@ public class RegistrarVenda extends JFrame{
       });
 
       JButton btnAdicionar = new JButton("Adicionar");
-      btnAdicionar.setFont(mainFont);
+      btnAdicionar.setFont(StaticVariables.staticFont);
       btnAdicionar.addActionListener(new ActionListener(){
-
           @Override
           public void actionPerformed(ActionEvent e) {
-              new AdicionarProduto(produtos);
-              tabela.revalidate();
+              new AdicionarProduto(controller, tableModel);
           }
-          
       });
 
       // Layout Botões
@@ -389,20 +392,13 @@ public class RegistrarVenda extends JFrame{
       buttonsPanel.add(btnAdicionar); 
 
 
-      // Layout Principal
-      JPanel mainPanel = new JPanel();
-      mainPanel.setLayout(new BorderLayout());
-      mainPanel.setBackground(new Color(255, 250, 250));
-      mainPanel.add(tabelaPainel, BorderLayout.NORTH);
-      mainPanel.add(formPanel, BorderLayout.CENTER);
-      mainPanel.add(buttonsPanel, BorderLayout.SOUTH);
-
-      add(mainPanel);
+      add(new JScrollPane(registerTable), BorderLayout.NORTH);
+      add(formPanel, BorderLayout.CENTER);
+      add(buttonsPanel, BorderLayout.SOUTH);
 
       setTitle("Registrar Venda");
       setSize(1200, 800);
       setMinimumSize(new Dimension(300, 400));
-      setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-      setVisible(true);
+      setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
   }
 }

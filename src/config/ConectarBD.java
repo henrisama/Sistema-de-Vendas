@@ -15,7 +15,6 @@ public class ConectarBD {
         try{
             Class.forName(DRIVER);
             Connection con = DriverManager.getConnection(URL, USER, PASSWORD);
-            System.out.println("Connected");
             return con;
         }catch(SQLException e){
             throw new RuntimeException(e);

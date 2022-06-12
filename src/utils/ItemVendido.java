@@ -1,22 +1,27 @@
 package utils;
 
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+import java.util.ArrayList;
+import java.util.List;
+
+import config.ConectarBD;
+
 public class ItemVendido {
   private int quantidade;
   private double valorUnitario;
-  private double ValorTotal;
+  private double valorTotal;
   private Produto produto;
 
 
   public ItemVendido(String codigoProduto, int quantidade) {
-    produto = Produto.getProduto(codigoProduto);
-    this.ValorTotal = produto.getValorVenda() * quantidade;
-    
-    this.quantidade = quantidade;
-  }
+    produto = Produto.getProdutoByCod(codigoProduto);
 
-  public ItemVendido(String codigoProduto) {
-    produto = Produto.getProduto(codigoProduto);
-    this.quantidade = 1;
+    this.valorTotal = produto.getValorVenda() * quantidade;
+    this.quantidade = quantidade;
   }
 
   public int getQuantidade() {
@@ -31,20 +36,93 @@ public class ItemVendido {
     return this.valorUnitario;
   }
 
+  public Produto getProduto() {
+    return this.produto;
+  }
+
+  public void setProduto(Produto produto) {
+    this.produto = produto;
+  }
+
   public void setValorUnitario(double valorUnitario) {
     this.valorUnitario = valorUnitario;
   }
 
   public double getValorTotal() {
-    return this.ValorTotal;
+    return this.valorTotal;
   }
 
   public void setValorTotal(double ValorTotal) {
-    this.ValorTotal = ValorTotal;
+    this.valorTotal = ValorTotal;
   }
 
-  public void registrarItemVenda(int codVenda){
+  public void registrarItemVenda(String idVenda){
+    try{
+      String query = "INSERT INTO ItemVendido VALUES(?,?,?,?,?,?);";
 
+      Connection con = ConectarBD.Connect();
+      PreparedStatement stmt = con.prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
+      stmt.setString(1, null);
+      stmt.setInt(2, this.quantidade);
+      stmt.setDouble(3, this.valorUnitario);
+      stmt.setDouble(4, this.valorTotal);
+      stmt.setDouble(5, this.produto.getID());
+      stmt.setString(6, idVenda);
+      stmt.executeUpdate();
+
+      this.produto.setQuantidade(this.produto.getQuantidade() - this.quantidade);
+      this.produto.save();
+      
+    }catch(SQLException e){
+      throw new RuntimeException(e);
+    }
+  }
+
+  public static List<String[]> getTodosItemsVendidos(String codigoVenda){
+    try{
+      Connection con = ConectarBD.Connect();
+      Statement stmt = con.createStatement();
+      ResultSet rs = stmt
+      .executeQuery("SELECT * FROM ItemVendido WHERE idVenda='"+codigoVenda+"';");
+
+      String id, 
+        quantidade, 
+        valorUnitario, 
+        valorTotal, 
+        idProduto, 
+        idVenda;
+
+
+      List<String> values = new ArrayList<String>();
+      List<String[]> result = new ArrayList<String[]>();
+        
+      while(rs.next()){
+        id = rs.getString(1);
+        quantidade = rs.getString(2);
+        valorUnitario = rs.getString(3);
+        valorTotal = rs.getString(4);
+        idProduto = rs.getString(5);
+        idVenda = rs.getString(6);
+
+        values.add(id);
+        values.add(quantidade);
+        values.add(valorUnitario);
+        values.add(valorTotal);
+        values.add(idProduto);
+        values.add(idVenda);
+        
+        result.add(values.toArray(new String[0]));
+        values.clear();
+      }
+      
+      rs.close();
+      stmt.close();
+      con.close();
+
+      return result;
+    }catch(SQLException e){
+      throw new RuntimeException(e);
+    }
   }
 
 

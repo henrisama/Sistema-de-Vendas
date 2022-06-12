@@ -64,45 +64,50 @@ public class Produto {
     this.quantidade = quantidade;
   }
 
-  public static Produto getProduto(String codigo){
-    Produto produto = new Produto();
-    boolean hasData = false;
+  public void save(){
+    try {
+      Connection con = ConectarBD.Connect();
+      final PreparedStatement stmt = con.prepareStatement(
+        "UPDATE Produto SET quantidade = ? WHERE id='"+this.ID+"'"
+      );
+      stmt.setInt(1, this.quantidade);
+      stmt.executeUpdate();
 
+      stmt.close();
+      con.close();
+    } catch (SQLException e) {
+      throw new RuntimeException(e);
+    }
+  }
+
+  public static Produto getProdutoByCod(String codProduto){
+    Produto produto = new Produto();
+    
     //do SQL 
     try {
-      String search = "select * from produto where codProduto='"+codigo+"';";
-
       Connection con = ConectarBD.Connect();
-      final PreparedStatement ps = con.prepareStatement(search);
-      final ResultSet rs = ps.executeQuery();
-
-      /* final ResultSetMetaData metaRS = rs.getMetaData();
-      final int columnCount = metaRS.getColumnCount(); */
+      final PreparedStatement stmt = con.prepareStatement(
+        "SELECT * FROM Produto WHERE codProduto='"+codProduto+"'"
+      );
+      final ResultSet rs = stmt.executeQuery();
 
       while (rs.next()) {
-        hasData = true;
-        /* for (int i = 1; i <= columnCount; i++) {
-          final Object value = rs.getObject(i);
-          System.out.println("column: "+i+" Valor: "+value.toString());
-        } */
-        produto.setID(Integer.parseInt(rs.getObject(1).toString()));
-        produto.setValorVenda(Double.parseDouble(rs.getObject(2).toString())); //valor de venda
-        produto.setValorCusto(Double.parseDouble(rs.getObject(3).toString())); //valor de custo
-        produto.setNome(rs.getObject(4).toString()); // nome
-        produto.setCodigo(rs.getObject(5).toString()); // codigo
-        produto.setQuantidade(Integer.parseInt(rs.getObject(6).toString())); //quantidade
+        produto.setID(rs.getInt(1));
+        produto.setValorVenda(rs.getDouble(2)); //valor de venda
+        produto.setValorCusto(rs.getDouble(3)); //valor de custo
+        produto.setNome(rs.getString(4)); // nome
+        produto.setCodigo(rs.getString(5)); // codigo
+        produto.setQuantidade(rs.getInt(6)); //quantidade
       }
+
+      rs.close();
+      stmt.close();
+      con.close();
+
+      return produto;
     } catch (SQLException e) {
-      System.out.println(e.getMessage());
+      throw new RuntimeException(e);
     }
-
-    //System.out.println(produto.toString());
-
-    if(!hasData){
-      return null;
-    }
-
-    return produto;
   }
 
   @Override

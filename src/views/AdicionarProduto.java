@@ -3,70 +3,42 @@ package views;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import javax.swing.JButton;
-import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.JOptionPane;
-import javax.swing.JPanel;
-import javax.swing.JTextField;
-import javax.swing.WindowConstants;
-import javax.swing.event.DocumentEvent;
-import javax.swing.event.DocumentListener;
+import java.util.List;
 
+import javax.swing.*;
+import javax.swing.table.DefaultTableModel;
+
+import Static.StaticVariables;
+import controller.RegistrarVendaControle;
 import utils.Produto;
-import utils.Produtos;
 
 public class AdicionarProduto extends JFrame{
-  final private Font mainFont = new Font("Arial", Font.BOLD, 18);
-
-  public AdicionarProduto(Produtos produtos){
-    JLabel lbCodProduto = new JLabel("Código Produto:");
-    lbCodProduto.setFont(mainFont);
+  
+  public AdicionarProduto(
+    RegistrarVendaControle controller,
+    DefaultTableModel tableModel
+  ){
     
-
     JTextField tfCodProduto = new JTextField();
-    tfCodProduto.setFont(mainFont);
-    tfCodProduto.getDocument().addDocumentListener(new DocumentListener() {
-      public void changedUpdate(DocumentEvent e) {
-        warn();
-      }
-      public void removeUpdate(DocumentEvent e) {
-        warn();
-      }
-      public void insertUpdate(DocumentEvent e) {
-        warn();
-      }
-
-      public void warn(){
-      }
-    });
-
-    // Campo2
-    JLabel lbQtd = new JLabel("Quantidade:");
-    lbQtd.setFont(mainFont);
-
     JTextField tfQtd = new JTextField();
-    tfQtd.setFont(mainFont);
-    tfQtd.getDocument().addDocumentListener(new DocumentListener() {
-      public void changedUpdate(DocumentEvent e) {
-        warn();
-      }
-      public void removeUpdate(DocumentEvent e) {
-        warn();
-      }
-      public void insertUpdate(DocumentEvent e) {
-        warn();
-      }
 
-      public void warn(){
-        
-      }
-    });
+    JLabel lbCodProduto = new JLabel("Código Produto:");
+    JLabel lbQtd = new JLabel("Quantidade:");
+    
+    lbCodProduto.setFont(StaticVariables.staticFont);
+    lbQtd.setFont(StaticVariables.staticFont);
+
+    tfCodProduto.setFont(StaticVariables.staticFont);
+    tfQtd.setFont(StaticVariables.staticFont);
 
     JButton btnCancelar = new JButton("Cancelar");
-    btnCancelar.setFont(mainFont);
-    btnCancelar.addActionListener(new ActionListener(){
+    JButton btnAdicionar = new JButton("Adicionar");
 
+    btnCancelar.setFont(StaticVariables.staticFont);
+    btnAdicionar.setFont(StaticVariables.staticFont);
+
+    // action listener
+    btnCancelar.addActionListener(new ActionListener(){
       @Override
       public void actionPerformed(ActionEvent e) {
         setVisible(false);
@@ -74,34 +46,36 @@ public class AdicionarProduto extends JFrame{
       }
     });
 
-    JButton btnAdicionar = new JButton("Adicionar");
-    btnAdicionar.setFont(mainFont);
     btnAdicionar.addActionListener(new ActionListener(){
-
       @Override
       public void actionPerformed(ActionEvent e) {
-        
-        Produto produto = Produto.getProduto(tfCodProduto.getText());
+        Produto produto = Produto.getProdutoByCod(tfCodProduto.getText());
 
         if(produto != null){
-          produtos.produtos[produtos.index_produtos][0] = produto.getCodigo();
-          produtos.produtos[produtos.index_produtos][1] = produto.getNome();
-          produtos.produtos[produtos.index_produtos][2] = tfQtd.getText();
-          produtos.produtos[produtos.index_produtos][3] = Double.toString(produto.getValorCusto());
+          int result = controller
+            .venda
+            .adicionarItem(tfCodProduto.getText(), Integer.parseInt(tfQtd.getText()));
 
-          
-          int i;
-          for(i=0; i<=produtos.index_produtos; i++){
-            System.out.print(produtos.produtos[i][0]+" ");
-            System.out.print(produtos.produtos[i][1]+" ");
-            System.out.print(produtos.produtos[i][2]+" ");
-            System.out.println(produtos.produtos[i][3]+" ");
+          if(result == 1){
+            tableModel.insertRow(0, new String[]{ 
+              Integer.toString(produto.getID()),
+              produto.getNome(),
+              tfQtd.getText(),
+              Double.toString(produto.getValorVenda()),
+              Double.toString(Integer.parseInt(tfQtd.getText()) * produto.getValorVenda())
+            });
+  
+            setVisible(false);
+            dispose();
+          }else{
+            JOptionPane.showMessageDialog(
+            null,
+            "Quantidade inválida!", 
+            "Mensagem de erro",
+            JOptionPane.PLAIN_MESSAGE
+          );
           }
-          //System.out.println(produtos.index_produtos);
-          produtos.index_produtos++;
 
-          setVisible(false);
-          dispose();
         }else{
           JOptionPane.showMessageDialog(
             null,
@@ -126,21 +100,15 @@ public class AdicionarProduto extends JFrame{
     buttonsPanel.add(btnCancelar);
     buttonsPanel.add(btnAdicionar); 
 
-    JPanel mainPanel = new JPanel();
-    mainPanel.setLayout(new BorderLayout());
-    mainPanel.setBackground(new Color(255, 250, 250));
-    //mainPanel.add(tabelaPainel, BorderLayout.NORTH);
-    mainPanel.add(formPanel, BorderLayout.NORTH);
-    mainPanel.add(buttonsPanel, BorderLayout.SOUTH);
+
+    add(formPanel, BorderLayout.NORTH);
+    add(buttonsPanel, BorderLayout.SOUTH);
 
 
-    add(mainPanel);
-
-
-    setTitle("Registrar Venda");
-    setSize(400, 400);
+    setTitle("Adicionar Produto");
+    setSize(600, 600);
     setMinimumSize(new Dimension(300, 400));
-    setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+    setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
     setVisible(true);
   }
 
