@@ -20,15 +20,21 @@ public class AdicionarProduto extends JFrame{
     RegistrarVendaControle controller,
     DefaultTableModel tableModel
   ){
-    
-    JTextField tfCodProduto = new JTextField();
-    JTextField tfQtd = new JTextField();
-
+    // labels
     JLabel lbCodProduto = new JLabel("Código Produto:");
     JLabel lbQtd = new JLabel("Quantidade:");
     JLabel lbNome = new JLabel("Nome:");
     JLabel lbValor = new JLabel("valor:");
     
+    // text fields
+    JTextField tfCodProduto = new JTextField();
+    JTextField tfQtd = new JTextField();
+
+    // buttons
+    JButton btnAdicionar = new JButton("Adicionar");
+    JButton btnCancelar = new JButton("Cancelar");
+
+    // fonts
     lbCodProduto.setFont(StaticVariables.staticFont);
     lbQtd.setFont(StaticVariables.staticFont);
     lbNome.setFont(StaticVariables.staticFont);
@@ -37,13 +43,10 @@ public class AdicionarProduto extends JFrame{
     tfCodProduto.setFont(StaticVariables.staticFont);
     tfQtd.setFont(StaticVariables.staticFont);
 
-    JButton btnCancelar = new JButton("Cancelar");
-    JButton btnAdicionar = new JButton("Adicionar");
-
     btnCancelar.setFont(StaticVariables.staticFont);
     btnAdicionar.setFont(StaticVariables.staticFont);
 
-    // action listener
+    // listeners
     tfCodProduto.getDocument().addDocumentListener(new DocumentListener() {
       public void changedUpdate(DocumentEvent e) {
         warn();
@@ -118,6 +121,7 @@ public class AdicionarProduto extends JFrame{
       
     });
 
+    // panels
     JPanel formPanel = new JPanel();
     formPanel.setLayout(new GridLayout(2, 2, 5, 5));
     formPanel.add(lbCodProduto);
@@ -145,7 +149,6 @@ public class AdicionarProduto extends JFrame{
     setSize(600, 600);
     setMinimumSize(new Dimension(300, 400));
     setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
-    setVisible(true);
   }
 
 }

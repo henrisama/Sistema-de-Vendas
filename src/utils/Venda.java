@@ -53,6 +53,10 @@ public class Venda {
     this.itemsVendidos = itemsVendidos;
   }
 
+  public void clearItemsVendidos(){
+    this.itemsVendidos.clear();
+  }
+
   public String getData() {
     return this.data;
   }

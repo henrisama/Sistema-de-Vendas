@@ -41,7 +41,7 @@ public class ItemsVenda extends JFrame{
     popupMenu.add(devolucaoMenu);
     itemsTable.setComponentPopupMenu(popupMenu);
     
-    // listener
+    // listeners
     devolucaoMenu.addActionListener(new ActionListener() {
       @Override
       public void actionPerformed(ActionEvent e) {
@@ -50,8 +50,9 @@ public class ItemsVenda extends JFrame{
         JTable table = (JTable)popup.getInvoker();
 
         if(table.getSelectedRow() >= 0){
-          String codItemVenda = (String)itemsTable.getValueAt(table.getSelectedRow(), 0);
+          String codItemVendido = (String)itemsTable.getValueAt(table.getSelectedRow(), 0);
           // open registrar devolucao window
+          new RegistrarDevolucao(codItemVendido).setVisible(true);
         }
       }
     });

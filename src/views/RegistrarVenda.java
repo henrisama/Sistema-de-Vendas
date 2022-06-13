@@ -19,8 +19,7 @@ public class RegistrarVenda extends JFrame{
   private List<String> columns = new ArrayList<String>();
   private List<String[]> values = new ArrayList<String[]>();
 
-  JTextField tfFormaPagamento,tfDataPagamento, tfDataVenda, tfTempoGarantia;
-  JLabel lbInicio;
+  
 
   public RegistrarVenda() {
     // table
@@ -33,56 +32,74 @@ public class RegistrarVenda extends JFrame{
     DefaultTableModel tableModel = new DefaultTableModel(values.toArray(new Object[][] {}), columns.toArray());
     JTable registerTable = new JTable(tableModel){
       public boolean editCellAt(int row, int column, java.util.EventObject e) {
-         return false;
+        return false;
       }
     };
-
     
+    // labels
+    JLabel lbDataVenda = new JLabel("Data da venda:");
+    JLabel lbValorTotal = new JLabel("Valor Total:");
+    JLabel lbTempoGarantia = new JLabel("Tempo de Garantia:");
+    JLabel lbFormaPagamento = new JLabel("Forma de pagamento:");
+    JLabel lbDataPagamento = new JLabel("Data Pagamento:");
+    JLabel lbValorPagamento = new JLabel("Valor Pagamento:");
+    JLabel lbCodCliente = new JLabel("CPF Cliente:");
+    
+    // text fields
+    JTextField tfDataVenda = new JTextField();
+    JTextField tfValorTotal = new JTextField();
+    JTextField tfTempoGarantia = new JTextField();
+    JTextField tfFormaPagamento = new JTextField();
+    JTextField tfDataPagamento = new JTextField();
+    JTextField tfValorPagamento = new JTextField();
+    JTextField tfCodCliente = new JTextField();
 
-      // Campo1
-      JLabel lbFormaPagamento = new JLabel("Forma de pagamento:");
-      lbFormaPagamento.setFont(StaticVariables.staticFont);
-      
+    // buttons
+    JButton btnConluir = new JButton("Concluir");
+    JButton btnCancelar = new JButton("Cancelar");
+    JButton btnAdicionar = new JButton("Adicionar");
+    
+    //fonts
+    lbDataVenda.setFont(StaticVariables.staticFont);
+    tfDataVenda.setFont(StaticVariables.staticFont);
+    lbValorTotal.setFont(StaticVariables.staticFont);
+    tfValorTotal.setFont(StaticVariables.staticFont);
+    lbTempoGarantia.setFont(StaticVariables.staticFont);
+    tfTempoGarantia.setFont(StaticVariables.staticFont);
+    lbFormaPagamento.setFont(StaticVariables.staticFont);
+    tfFormaPagamento.setFont(StaticVariables.staticFont);
+    lbDataPagamento.setFont(StaticVariables.staticFont);
+    tfDataPagamento.setFont(StaticVariables.staticFont);
+    lbValorPagamento.setFont(StaticVariables.staticFont);
+    tfValorPagamento.setFont(StaticVariables.staticFont);
+    lbCodCliente.setFont(StaticVariables.staticFont);
+    tfCodCliente.setFont(StaticVariables.staticFont);
+    btnConluir.setFont(StaticVariables.staticFont);
+    btnCancelar.setFont(StaticVariables.staticFont);
+    btnAdicionar.setFont(StaticVariables.staticFont);
 
-      tfFormaPagamento = new JTextField();
-      tfFormaPagamento.setFont(StaticVariables.staticFont);
-      tfFormaPagamento.getDocument().addDocumentListener(new DocumentListener() {
-        public void changedUpdate(DocumentEvent e) {
-          warn();
-        }
-        public void removeUpdate(DocumentEvent e) {
-          warn();
-        }
-        public void insertUpdate(DocumentEvent e) {
-          warn();
-        }
+    // listeners
+    tfFormaPagamento.getDocument().addDocumentListener(new DocumentListener() {
+      public void changedUpdate(DocumentEvent e) { warn(); }
+      public void removeUpdate(DocumentEvent e) { warn(); }
+      public void insertUpdate(DocumentEvent e) { warn(); }
 
-        public void warn(){
-          controller.venda.setTipoPagamento(tfFormaPagamento.getText().toUpperCase());
-          if(!controller.verificarTipoPagamento()){
-            System.out.println("Tipo de pagamento inválido");
-          }else{
-            System.out.println("Tipo de pagamento válido");
-          }
+      public void warn(){
+        controller.venda.setTipoPagamento(tfFormaPagamento.getText().toUpperCase());
+        if(!controller.verificarTipoPagamento()){
+          System.out.println("Tipo de pagamento inválido");
+        }else{
+          System.out.println("Tipo de pagamento válido");
         }
-      });
+      }
+    });
 
       // Campo2
-      JLabel lbDataPagamento = new JLabel("Data Pagamento:");
-      lbDataPagamento.setFont(StaticVariables.staticFont);
 
-     tfDataPagamento = new JTextField();
-     tfDataPagamento.setFont(StaticVariables.staticFont);
      tfDataPagamento.getDocument().addDocumentListener(new DocumentListener() {
-      public void changedUpdate(DocumentEvent e) {
-        warn();
-      }
-      public void removeUpdate(DocumentEvent e) {
-        warn();
-      }
-      public void insertUpdate(DocumentEvent e) {
-        warn();
-      }
+      public void changedUpdate(DocumentEvent e) { warn(); }
+      public void removeUpdate(DocumentEvent e) { warn(); }
+      public void insertUpdate(DocumentEvent e) { warn(); }
 
       public void warn(){
         controller.venda.setDataPagamento(tfDataPagamento.getText());
@@ -95,21 +112,10 @@ public class RegistrarVenda extends JFrame{
     });
 
       // Campo3
-      JLabel lbDataVenda = new JLabel("Data da venda:");
-      lbDataVenda.setFont(StaticVariables.staticFont);
-
-      tfDataVenda = new JTextField();
-      tfDataVenda.setFont(StaticVariables.staticFont);
       tfDataVenda.getDocument().addDocumentListener(new DocumentListener() {
-        public void changedUpdate(DocumentEvent e) {
-          warn();
-        }
-        public void removeUpdate(DocumentEvent e) {
-          warn();
-        }
-        public void insertUpdate(DocumentEvent e) {
-          warn();
-        }
+        public void changedUpdate(DocumentEvent e) { warn(); }
+        public void removeUpdate(DocumentEvent e) { warn(); }
+        public void insertUpdate(DocumentEvent e) { warn(); }
 
         public void warn(){
           controller.venda.setData(tfDataVenda.getText());
@@ -122,21 +128,11 @@ public class RegistrarVenda extends JFrame{
       });
 
       // Campo4
-      JLabel lbTempoGarantia = new JLabel("Tempo de Garantia:");
-      lbTempoGarantia.setFont(StaticVariables.staticFont);
-
-      tfTempoGarantia = new JTextField();
-      tfTempoGarantia.setFont(StaticVariables.staticFont);
+      
       tfTempoGarantia.getDocument().addDocumentListener(new DocumentListener() {
-        public void changedUpdate(DocumentEvent e) {
-          warn();
-        }
-        public void removeUpdate(DocumentEvent e) {
-          warn();
-        }
-        public void insertUpdate(DocumentEvent e) {
-          warn();
-        }
+        public void changedUpdate(DocumentEvent e) { warn(); }
+        public void removeUpdate(DocumentEvent e) { warn(); }
+        public void insertUpdate(DocumentEvent e) { warn(); }
 
         public void warn(){
           String tg = tfTempoGarantia.getText();
@@ -153,21 +149,11 @@ public class RegistrarVenda extends JFrame{
       });
 
       // Campo5
-      JLabel lbValorTotal = new JLabel("Valor Total:");
-      lbValorTotal.setFont(StaticVariables.staticFont);
-
-      JTextField tfValorTotal = new JTextField();
-      tfValorTotal.setFont(StaticVariables.staticFont);
+      
       tfValorTotal.getDocument().addDocumentListener(new DocumentListener() {
-        public void changedUpdate(DocumentEvent e) {
-          warn();
-        }
-        public void removeUpdate(DocumentEvent e) {
-          warn();
-        }
-        public void insertUpdate(DocumentEvent e) {
-          warn();
-        }
+        public void changedUpdate(DocumentEvent e) { warn(); }
+        public void removeUpdate(DocumentEvent e) { warn(); }
+        public void insertUpdate(DocumentEvent e) { warn(); }
 
         public void warn(){
           String num = tfValorTotal.getText();
@@ -186,21 +172,11 @@ public class RegistrarVenda extends JFrame{
       });
 
       // Campo6
-      JLabel lbValorPagamento = new JLabel("Valor Pagamento:");
-      lbValorPagamento.setFont(StaticVariables.staticFont);
-
-      JTextField tfValorPagamento = new JTextField();
-      tfValorPagamento.setFont(StaticVariables.staticFont);
+      
       tfValorPagamento.getDocument().addDocumentListener(new DocumentListener() {
-        public void changedUpdate(DocumentEvent e) {
-          warn();
-        }
-        public void removeUpdate(DocumentEvent e) {
-          warn();
-        }
-        public void insertUpdate(DocumentEvent e) {
-          warn();
-        }
+        public void changedUpdate(DocumentEvent e) { warn(); }
+        public void removeUpdate(DocumentEvent e) { warn(); }
+        public void insertUpdate(DocumentEvent e) { warn(); }
 
         public void warn(){
           try{
@@ -212,21 +188,12 @@ public class RegistrarVenda extends JFrame{
       });
 
       // Campo7
-      JLabel lbCodCliente = new JLabel("CPF Cliente:");
-      lbCodCliente.setFont(StaticVariables.staticFont);
-
-      JTextField tfCodCliente = new JTextField(11);
-      tfCodCliente.setFont(StaticVariables.staticFont);
+      
+      
       tfCodCliente.getDocument().addDocumentListener(new DocumentListener() {
-        public void changedUpdate(DocumentEvent e) {
-          warn();
-        }
-        public void removeUpdate(DocumentEvent e) {
-          warn();
-        }
-        public void insertUpdate(DocumentEvent e) {
-          warn();
-        }
+        public void changedUpdate(DocumentEvent e) { warn(); }
+        public void removeUpdate(DocumentEvent e) { warn(); }
+        public void insertUpdate(DocumentEvent e) { warn(); }
 
         public void warn(){
           String cpf = tfCodCliente.getText();
@@ -240,165 +207,158 @@ public class RegistrarVenda extends JFrame{
           }
         }
       });
+      
+    btnConluir.addActionListener(new ActionListener(){
+      @Override
+      public void actionPerformed(ActionEvent e) {
+        int result = controller.handleConcluir();
 
-      // Grid
-      JPanel formPanel = new JPanel();
-      formPanel.setLayout(new GridLayout(7, 2, 5, 5));
-      formPanel.add(lbDataVenda);
-      formPanel.add(tfDataVenda);
-      formPanel.add(lbValorTotal);
-      formPanel.add(tfValorTotal);
-      formPanel.add(lbTempoGarantia);
-      formPanel.add(tfTempoGarantia);
-      formPanel.add(lbFormaPagamento);
-      formPanel.add(tfFormaPagamento);
-      formPanel.add(lbDataPagamento);
-      formPanel.add(tfDataPagamento);
-      formPanel.add(lbValorPagamento);
-      formPanel.add(tfValorPagamento);
-      formPanel.add(lbCodCliente);
-      formPanel.add(tfCodCliente);
+        switch (result) {
+          case 0:
+            JOptionPane.showMessageDialog(
+              null,
+              "Venda registrada!", 
+              "Mensagem de sucesso",
+              JOptionPane.PLAIN_MESSAGE
+            );
+            setVisible(false);
+            dispose();
+            break;
+          case 1:
+            JOptionPane.showMessageDialog(
+              null,
+              "Erro: Data inválida!", 
+              "Mensagem de erro",
+              JOptionPane.ERROR_MESSAGE
+            );
+            break;
+          case 2:
+            JOptionPane.showMessageDialog(
+              null,
+              "Erro: Valor inválido!", 
+              "Mensagem de erro",
+              JOptionPane.ERROR_MESSAGE
+            );
+            break;
+          case 3:
+            JOptionPane.showMessageDialog(
+              null,
+              "Erro: Período de garantia inválido!", 
+              "Mensagem de erro",
+              JOptionPane.ERROR_MESSAGE
+            );
+            break;
+          case 4:
+            JOptionPane.showMessageDialog(
+              null,
+              "Erro: Forma de pagamento inválida!", 
+              "Mensagem de erro",
+              JOptionPane.ERROR_MESSAGE
+            );
+            break;
+          case 5:
+            JOptionPane.showMessageDialog(
+              null,
+              "Erro: Data de pagamento inválida!", 
+              "Mensagem de erro",
+              JOptionPane.ERROR_MESSAGE
+            );
+            break;
+          case 6:
+            JOptionPane.showMessageDialog(
+              null,
+              "Erro: Valor de pagamento inválido!", 
+              "Mensagem de erro",
+              JOptionPane.ERROR_MESSAGE
+            );
+            break;
+          case 7:
+            JOptionPane.showMessageDialog(
+              null,
+              "Erro: Código do cliente inválido!", 
+              "Mensagem de erro",
+              JOptionPane.ERROR_MESSAGE
+            );
+            break;
+          case 8:
+            JOptionPane.showMessageDialog(
+              null,
+              "Erro: Código do atendente inválido!", 
+              "Mensagem de erro",
+              JOptionPane.ERROR_MESSAGE
+            );
+            break;
+          case 9:
+            JOptionPane.showMessageDialog(
+              null,
+              "Erro: Problema no banco de dados!", 
+              "Mensagem de erro",
+              JOptionPane.ERROR_MESSAGE
+            );
+            break;
+        }
+      }
+    });
 
-      // Página inicial
-      lbInicio = new JLabel();
-      lbInicio.setFont(StaticVariables.staticFont);
+    btnCancelar.addActionListener(new ActionListener(){
+      @Override
+      public void actionPerformed(ActionEvent e) {
+        tfDataVenda.setText("");
+        tfValorTotal.setText("");
+        tfTempoGarantia.setText("");
+        tfFormaPagamento.setText("");
+        tfDataPagamento.setText("");
+        tfValorPagamento.setText("");
+        tfCodCliente.setText("");
 
-      // Botoes
-      JButton btnConluir = new JButton("Concluir");
-      btnConluir.setFont(StaticVariables.staticFont);
-      btnConluir.addActionListener(new ActionListener(){
+        controller.venda.clearItemsVendidos();
+        
+        while(tableModel.getRowCount() > 0){
+          tableModel.removeRow(0);
+        }
+      }
+    });
 
-          @Override
-          public void actionPerformed(ActionEvent e) {   
-            System.out.println(controller.venda.toString());
-            int result = controller.handleConcluir();
+    btnAdicionar.addActionListener(new ActionListener(){
+      @Override
+      public void actionPerformed(ActionEvent e) {
+          new AdicionarProduto(controller, tableModel).setVisible(true);;
+      }
+    });
 
-            switch (result) {
-              case 0:
-                JOptionPane.showMessageDialog(
-                  null,
-                  "Venda registrada!", 
-                  "Mensagem de sucesso",
-                  JOptionPane.PLAIN_MESSAGE
-                );
-                setVisible(false);
-                dispose();
-                break;
-              case 1:
-                JOptionPane.showMessageDialog(
-                  null,
-                  "Erro: Data inválida!", 
-                  "Mensagem de erro",
-                  JOptionPane.ERROR_MESSAGE
-                );
-                break;
-              case 2:
-                JOptionPane.showMessageDialog(
-                  null,
-                  "Erro: Valor inválido!", 
-                  "Mensagem de erro",
-                  JOptionPane.ERROR_MESSAGE
-                );
-                break;
-              case 3:
-                JOptionPane.showMessageDialog(
-                  null,
-                  "Erro: Período de garantia inválido!", 
-                  "Mensagem de erro",
-                  JOptionPane.ERROR_MESSAGE
-                );
-                break;
-              case 4:
-                JOptionPane.showMessageDialog(
-                  null,
-                  "Erro: Forma de pagamento inválida!", 
-                  "Mensagem de erro",
-                  JOptionPane.ERROR_MESSAGE
-                );
-                break;
-              case 5:
-                JOptionPane.showMessageDialog(
-                  null,
-                  "Erro: Data de pagamento inválida!", 
-                  "Mensagem de erro",
-                  JOptionPane.ERROR_MESSAGE
-                );
-                break;
-              case 6:
-                JOptionPane.showMessageDialog(
-                  null,
-                  "Erro: Valor de pagamento inválido!", 
-                  "Mensagem de erro",
-                  JOptionPane.ERROR_MESSAGE
-                );
-                break;
-              case 7:
-                JOptionPane.showMessageDialog(
-                  null,
-                  "Erro: Código do cliente inválido!", 
-                  "Mensagem de erro",
-                  JOptionPane.ERROR_MESSAGE
-                );
-                break;
-              case 8:
-                JOptionPane.showMessageDialog(
-                  null,
-                  "Erro: Código do atendente inválido!", 
-                  "Mensagem de erro",
-                  JOptionPane.ERROR_MESSAGE
-                );
-                break;
-              case 9:
-                JOptionPane.showMessageDialog(
-                  null,
-                  "Erro: Problema no banco de dados!", 
-                  "Mensagem de erro",
-                  JOptionPane.ERROR_MESSAGE
-                );
-                break;
-            }
-              
-          }
-
-      });
-
-      JButton btnCancelar = new JButton("Cancelar");
-      btnCancelar.setFont(StaticVariables.staticFont);
-      btnCancelar.addActionListener(new ActionListener(){
-
-          @Override
-          public void actionPerformed(ActionEvent e) {
-            tfFormaPagamento.setText("");
-            tfDataPagamento.setText("");
-            tfTempoGarantia.setText("");
-            tfDataVenda.setText("");
-          }
-      });
-
-      JButton btnAdicionar = new JButton("Adicionar");
-      btnAdicionar.setFont(StaticVariables.staticFont);
-      btnAdicionar.addActionListener(new ActionListener(){
-          @Override
-          public void actionPerformed(ActionEvent e) {
-              new AdicionarProduto(controller, tableModel);
-          }
-      });
-
-      // Layout Botões
-      JPanel buttonsPanel = new JPanel();
-      buttonsPanel.setLayout(new GridLayout(1, 2, 5, 5));
-      buttonsPanel.add(btnConluir);
-      buttonsPanel.add(btnCancelar);
-      buttonsPanel.add(btnAdicionar); 
+    // panels
+    JPanel formPanel = new JPanel();
+    formPanel.setLayout(new GridLayout(7, 2, 5, 5));
+    formPanel.add(lbDataVenda);
+    formPanel.add(tfDataVenda);
+    formPanel.add(lbValorTotal);
+    formPanel.add(tfValorTotal);
+    formPanel.add(lbTempoGarantia);
+    formPanel.add(tfTempoGarantia);
+    formPanel.add(lbFormaPagamento);
+    formPanel.add(tfFormaPagamento);
+    formPanel.add(lbDataPagamento);
+    formPanel.add(tfDataPagamento);
+    formPanel.add(lbValorPagamento);
+    formPanel.add(tfValorPagamento);
+    formPanel.add(lbCodCliente);
+    formPanel.add(tfCodCliente);
 
 
-      add(new JScrollPane(registerTable), BorderLayout.NORTH);
-      add(formPanel, BorderLayout.CENTER);
-      add(buttonsPanel, BorderLayout.SOUTH);
+    JPanel buttonsPanel = new JPanel();
+    buttonsPanel.setLayout(new GridLayout(1, 2, 5, 5));
+    buttonsPanel.add(btnConluir);
+    buttonsPanel.add(btnCancelar);
+    buttonsPanel.add(btnAdicionar); 
 
-      setTitle("Registrar Venda");
-      setSize(1200, 800);
-      setMinimumSize(new Dimension(300, 400));
-      setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
+
+    add(new JScrollPane(registerTable), BorderLayout.NORTH);
+    add(formPanel, BorderLayout.CENTER);
+    add(buttonsPanel, BorderLayout.SOUTH);
+
+    setTitle("Registrar Venda");
+    setSize(1200, 800);
+    setMinimumSize(new Dimension(300, 400));
+    setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
   }
 }

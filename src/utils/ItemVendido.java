@@ -21,6 +21,7 @@ public class ItemVendido {
     produto = Produto.getProdutoByCod(codigoProduto);
 
     this.valorTotal = produto.getValorVenda() * quantidade;
+    this.valorUnitario = produto.getValorVenda();
     this.quantidade = quantidade;
   }
 
