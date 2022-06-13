@@ -34,10 +34,32 @@ public class ItemsVenda extends JFrame{
          return false;
       }
     };
+
+    // popup
+    JPopupMenu popupMenu = new JPopupMenu();
+    JMenuItem devolucaoMenu = new JMenuItem("Registrar devolução");
+    popupMenu.add(devolucaoMenu);
+    itemsTable.setComponentPopupMenu(popupMenu);
     
+    // listener
+    devolucaoMenu.addActionListener(new ActionListener() {
+      @Override
+      public void actionPerformed(ActionEvent e) {
+        Component c = (Component)e.getSource();
+        JPopupMenu popup = (JPopupMenu)c.getParent();
+        JTable table = (JTable)popup.getInvoker();
+
+        if(table.getSelectedRow() >= 0){
+          String codItemVenda = (String)itemsTable.getValueAt(table.getSelectedRow(), 0);
+          // open registrar devolucao window
+        }
+      }
+    });
+
     itemsTable.addMouseListener(new MouseAdapter(){
+      @Override
       public void mouseClicked(MouseEvent me) {
-        if (me.getClickCount() == 2) {
+        if (me.getClickCount() == 2 && SwingUtilities.isLeftMouseButton(me)) {
           JTable target = (JTable)me.getSource();
           int row = target.getSelectedRow();
           JOptionPane.showMessageDialog(null, itemsTable.getValueAt(row, 0));

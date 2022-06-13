@@ -8,7 +8,7 @@ CREATE TABLE IF NOT EXISTS Produto (id INT NOT NULL AUTO_INCREMENT, valorVenda d
 CREATE TABLE IF NOT EXISTS Compra (id INT NOT NULL AUTO_INCREMENT, dataCompra date NOT NULL, valorTotal decimal(10, 2) NOT NULL, codRastreio varchar(20), gastoAdicional decimal(10, 2), statusRecebimento varchar(20) NOT NULL, PRIMARY KEY (id), idFornecedor INT NOT NULL);
 CREATE TABLE IF NOT EXISTS ItemVendido (id INT NOT NULL AUTO_INCREMENT, quantidade INT NOT NULL, valorUnitario decimal(10, 2) NOT NULL, valorTotal decimal(10, 2) NOT NULL, PRIMARY KEY (id), idProduto INT NOT NULL, idVenda INT NOT NULL);
 CREATE TABLE IF NOT EXISTS ItemComprado (id INT NOT NULL AUTO_INCREMENT, quantidadeCompra INT NOT NULL, valorCompra decimal(5, 2) NOT NULL, PRIMARY KEY (id), idProduto INT NOT NULL, idCompra INT NOT NULL);
-CREATE TABLE IF NOT EXISTS Devolucao (id INT NOT NULL, dataDevolucao date NOT NULL, gastosAdicionais decimal(5, 2) NOT NULL, formadeVolucao varchar(20) NOT NULL, motivoDevolucao varchar(20) NOT NULL, PRIMARY KEY (id), idVendido INT NOT NULL);
+CREATE TABLE IF NOT EXISTS Devolucao (id INT NOT NULL, dataDevolucao date NOT NULL, valorEstornado decimal(5, 2) NOT NULL, formadeVolucao varchar(30) NOT NULL, motivoDevolucao varchar(30) NOT NULL, PRIMARY KEY (id), idItemVendido INT NOT NULL);
 CREATE TABLE IF NOT EXISTS Fornecedor (id INT NOT NULL AUTO_INCREMENT, cnpj varchar(15), telefone varchar(20), tipo varchar(30), PRIMARY KEY(id));
 ALTER TABLE Funcionario ADD FOREIGN KEY (idPessoa) REFERENCES Pessoa(id) ON DELETE RESTRICT ON UPDATE CASCADE;
 ALTER TABLE Cliente ADD FOREIGN KEY (idPessoa) REFERENCES Pessoa(id) ON DELETE RESTRICT ON UPDATE CASCADE;
@@ -17,5 +17,5 @@ ALTER TABLE Venda ADD FOREIGN KEY (cpfCliente) REFERENCES Cliente(cpf) ON DELETE
 ALTER TABLE ItemVendido ADD FOREIGN KEY (idProduto) REFERENCES Produto(id) ON DELETE RESTRICT ON UPDATE CASCADE;
 ALTER TABLE ItemVendido ADD FOREIGN KEY (idVenda) REFERENCES Venda(id) ON DELETE RESTRICT ON UPDATE CASCADE;
 ALTER TABLE ItemComprado ADD FOREIGN KEY (idProduto) REFERENCES Produto(id) ON DELETE RESTRICT ON UPDATE CASCADE, ADD FOREIGN KEY (idCompra) REFERENCES Compra(id) ON DELETE RESTRICT ON UPDATE CASCADE;
-ALTER TABLE Devolucao ADD FOREIGN KEY (idVendido) REFERENCES ItemVendido(id) ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE Devolucao ADD FOREIGN KEY (idItemVendido) REFERENCES ItemVendido(id) ON DELETE RESTRICT ON UPDATE CASCADE;
 ALTER TABLE Compra ADD FOREIGN KEY (idFornecedor) REFERENCES Fornecedor(id) ON DELETE RESTRICT ON UPDATE CASCADE;

@@ -111,27 +111,6 @@ public class Venda {
     }
   }
 
-  public List<String[]> getItemsVendidosView(){
-    List<String[]> result = new ArrayList<String[]>();
-
-    ListIterator<ItemVendido> iter = itemsVendidos.listIterator();
-    for( ; iter.hasNext(); ){
-      ItemVendido iv = iter.next();
-
-      String[] values = {
-        iv.getProduto().getCodigo(), 
-        iv.getProduto().getNome(),
-        Integer.toString(iv.getQuantidade()),
-        Double.toString(iv.getValorUnitario()),
-        Double.toString(iv.getValorTotal())
-      };
-
-      result.add(values);
-    }
-
-    return result;
-  }
-
   public int registrarVenda(){
     this.atendente.setID(1);
 
