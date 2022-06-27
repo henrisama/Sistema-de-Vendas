@@ -11,6 +11,7 @@ import java.util.List;
 import config.ConectarBD;
 
 public class ItemVendido {
+  private int id;
   private int quantidade;
   private double valorUnitario;
   private double valorTotal;
@@ -23,6 +24,22 @@ public class ItemVendido {
     this.valorTotal = produto.getValorVenda() * quantidade;
     this.valorUnitario = produto.getValorVenda();
     this.quantidade = quantidade;
+  }
+
+  public ItemVendido(int id){
+    this.id = id;
+  }
+
+  public ItemVendido(){
+    
+  }
+
+  public int getId(){
+    return this.id;
+  }
+
+  public void setId(int id){
+    this.id = id;
   }
 
   public int getQuantidade() {
